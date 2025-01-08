@@ -1,3 +1,4 @@
+// src/components/AddTransaction.js
 import React, { useState } from 'react';
 import './AddTransaction.css';
 
@@ -9,15 +10,15 @@ const AddTransaction = ({ addTransaction }) => {
   const [type, setType] = useState('expense');
 
   const categories = [
-    'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts', 'Salary', 'Savings', 'Rental income',
-    'Groceries', 'Transportation', 'Entertainment' // Add your existing categories here
+    'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts',
+    'Salary', 'Savings', 'Rental income', 'Groceries', 'Transportation', 'Entertainment'
   ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newTransaction = { name, amount: parseFloat(amount), date, category, type };
     addTransaction(newTransaction);
-    // Reset form
+
     setName('');
     setAmount('');
     setDate('');
@@ -40,12 +41,10 @@ const AddTransaction = ({ addTransaction }) => {
         </select>
         <div className="transaction-type">
           <label>
-            <input type="radio" value="income" checked={type === 'income'} onChange={(e) => setType(e.target.value)} />
-            Income
+            <input type="radio" value="income" checked={type === 'income'} onChange={(e) => setType(e.target.value)} /> Income
           </label>
           <label>
-            <input type="radio" value="expense" checked={type === 'expense'} onChange={(e) => setType(e.target.value)} />
-            Expense
+            <input type="radio" value="expense" checked={type === 'expense'} onChange={(e) => setType(e.target.value)} /> Expense
           </label>
         </div>
         <button type="submit">Add Transaction</button>

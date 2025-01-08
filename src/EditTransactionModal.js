@@ -1,57 +1,63 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from './Home';
-import AddTransaction from './AddTransaction';
-import TransactionList from './TransactionList';
-import VisualReports from './VisualReports';
-import './App.css';
+// src/components/EditTransactionModal.js
+import React, { useState, useEffect } from 'react';
+import './EditTransactionModal.css';
 
-const App = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [transactionToEdit, setTransactionToEdit] = useState(null);
-  
-  const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
-  const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+const EditTransactionModal = ({ transaction, isOpen, onClose, onSave }) => {
+  const [editedTransaction, setEditedTransaction] = useState({
+    name: '',
+    amount: '',
+    date: '',
+    category: '',
+    type: 'expense'
+  });
 
-  const addTransaction = (transaction) => {
-    if (transactionToEdit) {
-      const updatedTransactions = transactions.map(t =>
-        t === transactionToEdit ? transaction : t
-      );
-      setTransactions(updatedTransactions);
-      setTransactionToEdit(null);
-    } else {
-      setTransactions([...transactions, transaction]);
+  useEffect(() => {
+    if (transaction) {
+      setEditedTransaction(transaction);
     }
+  }, [transaction]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedTransaction((prev) => ({ ...prev, [name]: value }));
   };
 
-  const editTransaction = (index) => {
-    setTransactionToEdit(transactions[index]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(editedTransaction);
   };
 
-  const deleteTransaction = (index) => {
-    const newTransactions = transactions.filter((_, i) => i !== index);
-    setTransactions(newTransactions);
-  };
+  if (!isOpen || !transaction) return null;
 
   return (
-    <Router>
-      <div className="app">
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/add-transaction">Add Transaction</Link>
-          <Link to="/transaction-list">Transaction List</Link>
-          <Link to="/visual-reports">Visual Reports</Link>
-        </nav>
-        <Routes>
-          <Route path="/" element={<Home totalIncome={totalIncome} totalExpenses={totalExpenses} />} />
-          <Route path="/add-transaction" element={<AddTransaction addTransaction={addTransaction} />} />
-          <Route path="/transaction-list" element={<TransactionList transactions={transactions} editTransaction={editTransaction} deleteTransaction={deleteTransaction} />} />
-          <Route path="/visual-reports" element={<VisualReports transactions={transactions} />} />
-        </Routes>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Edit Transaction</h2>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="name" value={editedTransaction.name} onChange={handleChange} placeholder="Transaction Name" required />
+          <input type="number" name="amount" value={editedTransaction.amount} onChange={handleChange} placeholder="Amount" required />
+          <input type="date" name="date" value={editedTransaction.date} onChange={handleChange} required />
+          <select name="category" value={editedTransaction.category} onChange={handleChange} required>
+            <option value="">Select Category</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Entertainment">Entertainment</option>
+            {/* Add other categories as needed */}
+          </select>
+          <div className="transaction-type">
+            <label>
+              <input type="radio" name="type" value="income" checked={editedTransaction.type === 'income'} onChange={handleChange} /> Income
+            </label>
+            <label>
+              <input type="radio" name="type" value="expense" checked={editedTransaction.type === 'expense'} onChange={handleChange} /> Expense
+            </label>
+          </div>
+          <button type="submit">Save Changes</button>
+          <button type="button" onClick={onClose}>Cancel</button>
+        </form>
       </div>
-    </Router>
+    </div>
   );
 };
 
-export default App;
+export default EditTransactionModal;

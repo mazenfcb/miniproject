@@ -1,3 +1,4 @@
+// src/components/VisualReports.js
 import React from 'react';
 import { Pie, Bar } from 'react-chartjs-2';
 import { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
@@ -7,16 +8,14 @@ Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 
 const VisualReports = ({ transactions }) => {
     const categories = [
-        'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts', 'Salary', 'Savings', 'Rental income',
-        'Groceries', 'Transportation', 'Entertainment' // Add your existing categories here
+        'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts',
+        'Salary', 'Savings', 'Rental income', 'Groceries', 'Transportation', 'Entertainment'
     ];
 
-    // Category-wise expense distribution
-    const categoryData = categories.map(category => {
-        return transactions.filter(t => t.category === category && t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
-    });
+    const categoryData = categories.map(category =>
+        transactions.filter(t => t.category === category && t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0)
+    );
 
-    // Monthly income vs. expenses
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const monthlyIncomeData = new Array(12).fill(0);
     const monthlyExpenseData = new Array(12).fill(0);
@@ -37,22 +36,21 @@ const VisualReports = ({ transactions }) => {
                 <Pie
                     data={{
                         labels: categories,
-                        datasets: [{
-                            data: categoryData,
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FFCD56', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56'], // Adjust colors as needed
-                        }],
+                        datasets: [
+                            {
+                                data: categoryData,
+                                backgroundColor: [
+                                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                                    '#FF9F40', '#FFCD56', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56'
+                                ],
+                            },
+                        ],
                     }}
                     options={{
                         responsive: true,
                         plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: (context) => `${context.label}: ${context.raw} DZD`,
-                                },
-                            },
+                            legend: { position: 'top' },
+                            tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw} DZD` } },
                         },
                     }}
                 />
@@ -62,44 +60,19 @@ const VisualReports = ({ transactions }) => {
                     data={{
                         labels: months,
                         datasets: [
-                            {
-                                label: 'Income',
-                                data: monthlyIncomeData,
-                                backgroundColor: '#36A2EB', // Adjust colors as needed
-                            },
-                            {
-                                label: 'Expenses',
-                                data: monthlyExpenseData,
-                                backgroundColor: '#FF6384', // Adjust colors as needed
-                            },
+                            { label: 'Income', data: monthlyIncomeData, backgroundColor: '#36A2EB' },
+                            { label: 'Expenses', data: monthlyExpenseData, backgroundColor: '#FF6384' },
                         ],
                     }}
                     options={{
                         responsive: true,
                         plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: (context) => `${context.dataset.label}: ${context.raw} DZD`,
-                                },
-                            },
+                            legend: { position: 'top' },
+                            tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${context.raw} DZD` } },
                         },
                         scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Month',
-                                },
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Amount (DZD)',
-                                },
-                                beginAtZero: true,
-                            },
+                            x: { title: { display: true, text: 'Month' } },
+                            y: { title: { display: true, text: 'Amount (DZD)', beginAtZero: true } },
                         },
                     }}
                 />

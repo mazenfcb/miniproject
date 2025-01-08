@@ -8,7 +8,7 @@ const TransactionList = ({ transactions, editTransaction, deleteTransaction }) =
       <ul>
         {transactions.map((transaction, index) => (
           <li key={index}>
-            <span>{transaction.name} - {transaction.amount} DZD - {transaction.date} - {transaction.category} </span>
+            <span>{transaction.name} - {transaction.amount} DZD - {transaction.date} - {transaction.category}</span>
             <button onClick={() => editTransaction(index)}>Edit</button>
             <button onClick={() => deleteTransaction(index)}>Delete</button>
           </li>

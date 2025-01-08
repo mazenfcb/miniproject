@@ -8,6 +8,11 @@ const AddTransaction = ({ addTransaction }) => {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('expense');
 
+  const categories = [
+    'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts', 'Salary', 'Savings', 'Rental income',
+    'Groceries', 'Transportation', 'Entertainment' // Add your existing categories here
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newTransaction = { name, amount: parseFloat(amount), date, category, type };
@@ -29,10 +34,9 @@ const AddTransaction = ({ addTransaction }) => {
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
         <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="">Select Category</option>
-          <option value="Groceries">Groceries</option>
-          <option value="Transportation">Transportation</option>
-          <option value="Entertainment">Entertainment</option>
-          {/* Add more categories as needed */}
+          {categories.map(cat => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
         </select>
         <div className="transaction-type">
           <label>

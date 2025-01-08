@@ -6,7 +6,10 @@ import './VisualReports.css';
 Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const VisualReports = ({ transactions }) => {
-    const categories = ['Groceries', 'Transportation', 'Entertainment']; // Add categories as needed
+    const categories = [
+        'Business', 'Investments', 'Extra income', 'Deposits', 'Lottery', 'Gifts', 'Salary', 'Savings', 'Rental income',
+        'Groceries', 'Transportation', 'Entertainment' // Add your existing categories here
+    ];
 
     // Category-wise expense distribution
     const categoryData = categories.map(category => {
@@ -36,7 +39,7 @@ const VisualReports = ({ transactions }) => {
                         labels: categories,
                         datasets: [{
                             data: categoryData,
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // Adjust colors as needed
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FFCD56', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56'], // Adjust colors as needed
                         }],
                     }}
                     options={{

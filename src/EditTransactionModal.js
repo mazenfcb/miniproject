@@ -35,7 +35,7 @@ const App = () => {
   };
 
   return (
-    
+    <Router>
       <div className="app">
         <nav>
           <Link to="/">Home</Link>
@@ -50,7 +50,7 @@ const App = () => {
           <Route path="/visual-reports" element={<VisualReports transactions={transactions} />} />
         </Routes>
       </div>
-    
+    </Router>
   );
 };
 
